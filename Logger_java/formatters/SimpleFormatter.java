@@ -3,6 +3,8 @@ package formatters;
 import core.LogFormatter;
 import core.LogMessage;
 
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 
 public class SimpleFormatter implements LogFormatter {
@@ -22,10 +24,10 @@ public class SimpleFormatter implements LogFormatter {
 
     @Override
     public String format(LogMessage message) {
-        String formatted = pattern.replace("%LEVEL", message.getLevel().toString())
-                .replace("%TIMESTAMP", dateTimeFormatter.format(message.getTimestamp()))
+        ZonedDateTime dateTime = message.getTimestamp().atZone(ZoneId.systemDefault());
+        return pattern.replace("%LEVEL", message.getLevel().toString())
+                .replace("%TIMESTAMP", dateTimeFormatter.format(dateTime))
                 .replace("%MESSAGE", message.getMessage());
-        return formatted;
     }
 
     @Override
