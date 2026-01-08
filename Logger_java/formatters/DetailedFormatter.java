@@ -5,16 +5,16 @@ import core.LogMessage;
 
 import java.time.format.DateTimeFormatter;
 
-public class SimpleFormatter implements LogFormatter {
+public class DetailedFormatter implements LogFormatter {
     private String pattern;
     private String dateFormat;
     private DateTimeFormatter dateTimeFormatter;
 
-    public SimpleFormatter() {
-        this("[%LEVEL] %TIMESTAMP - %MESSAGE");
+    public DetailedFormatter() {
+        this("[%LEVEL] %TIMESTAMP [%SOURCE] - %MESSAGE");
     }
 
-    public SimpleFormatter(String pattern) {
+    public DetailedFormatter(String pattern) {
         this.pattern = pattern;
         this.dateFormat = "yyyy-MM-dd HH:mm:ss";
         this.dateTimeFormatter = DateTimeFormatter.ofPattern(dateFormat);
@@ -24,7 +24,8 @@ public class SimpleFormatter implements LogFormatter {
     public String format(LogMessage message) {
         String formatted = pattern.replace("%LEVEL", message.getLevel().toString())
                 .replace("%TIMESTAMP", dateTimeFormatter.format(message.getTimestamp()))
-                .replace("%MESSAGE", message.getMessage());
+                .replace("%MESSAGE", message.getMessage())
+                .replace("%SOURCE", message.getSource());
         return formatted;
     }
 

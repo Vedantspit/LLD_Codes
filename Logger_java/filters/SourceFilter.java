@@ -1,7 +1,5 @@
 package filters;
 
-import java.util.List;
-
 import core.LogFilter;
 import core.LogLevel;
 import core.LogMessage;
@@ -9,27 +7,25 @@ import core.LogMessage;
 public class SourceFilter implements LogFilter {
 
     private String sourcePattern;
-    private List<String> patterns;
     private boolean include;
     private LogLevel level;
 
-    public SourceFilter(List<String> patterns) {
-        this.patterns = patterns;
-        this.include = true;
+    public SourceFilter(String sourcePattern, boolean include) {
+        this.sourcePattern = sourcePattern;
+        this.include = include;
         this.level = LogLevel.DEBUG;
     }
 
     @Override
     public boolean shouldLog(LogMessage message) {
-        if (!message.getLevel().isGreaterOrEqual(level))
+        if (!message.getLevel().isGreaterOrEqual(level)) {
             return false;
-
-        String msg = message.getMessage();
-        for (String p : patterns) {
-            if (msg.contains(p))
-                return true; // OR logic
         }
-        return false;
+        if (message.getSource() == null) {
+            return !include;
+        }
+        boolean matches = message.getSource().contains(sourcePattern);
+        return include ? matches : !matches;
     }
 
     @Override

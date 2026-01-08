@@ -18,12 +18,13 @@ public class LevelFilter implements LogFilter {
 
     @Override
     public boolean shouldLog(LogMessage message) {
-        return message.getLevel().isGreaterOrEqual(this.level);
+        return message.getLevel().isGreaterOrEqual(level);
     }
 
     @Override
     public void setLevel(LogLevel level) {
         this.level = level;
+
     }
 
     @Override
