@@ -40,7 +40,7 @@ public class PubSubService {
     public void unSubscribe(String topicName, Subscriber subscriber) {
         Topic topic = topicRegistry.get(topicName);
         if (topic != null) {
-            topicRegistry.remove(topicName);
+            topic.removeSubscriber(subscriber);
         }
         System.out.println("Subscriber '" + subscriber.getId() + "' unsubscribed from topic: " + topicName);
     }
